@@ -1,10 +1,19 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import "./WeatherApp.css"
+import axios from "axios"
 const WeatherApp = () => {
   const [input, setInput] = useState("")
   const [temperture, setTemperture] = useState("")
   const [city, setCity] = useState("")
 
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&APPID=6557810176c36fac5f0db536711a6c52`
+
+  const fetchAPI = async () => {
+    await axios.get(url).then((res) => console.log(res))
+  }
+  useEffect(() => {
+    fetchAPI()
+  }, [])
   const submit = () => {
     setCity(input)
   }
@@ -22,7 +31,7 @@ const WeatherApp = () => {
 
             <div className="weather-content">
               today
-              {city ? <div className="city">{city}</div>:<div>city Name</div>}
+              {city ? <div className="city">{city}</div> : <div>city Name</div>}
               <div className="temperture">{temperture} °C</div>
               <div className="sky-state">clear sky</div>
               <div>
@@ -80,4 +89,3 @@ const WeatherApp = () => {
 }
 
 export default WeatherApp
-
