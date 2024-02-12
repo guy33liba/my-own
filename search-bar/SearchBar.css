@@ -1,0 +1,33 @@
+.container {
+  display: flex;
+}
+.new-name {
+  margin-top: 20px;
+  font-size: 40px;
+  margin-left: 110px;
+}
+.generate button {
+  width: 200px;
+  height: 50px;
+  margin-left: 110px;
+  font-size: 30px;
+}
+.found-list {
+  border: 1px solid black;
+  display: flex;
+  width: 500px;
+  height: 400px;
+  flex-wrap: wrap;
+}
+.found-item {
+  margin-left: 20px;
+  height: 30px;
+  width: 100px;
+}
+.search-list {
+  margin-top: 20px;
+}
+.input {
+  height: 30px;
+  width: 250px;
+}
