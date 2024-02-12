@@ -43,6 +43,7 @@ const SerachBar = () => {
     const newGeneratedName = array[Math.floor(Math.random() * found.length)]
     setNewname(() => newGeneratedName)
   }
+
   return (
     <div>
       <div className="container">
@@ -51,9 +52,9 @@ const SerachBar = () => {
             <input className="input" type="text" value={input} onChange={(e) => setinput(e.target.value)} />
           </div>
           <div className="found-list search-list">
-            {found.map((item) => {
+            {found.map((item, i) => {
               return (
-                <div className="found-item">
+                <div key={i} className="found-item">
                   {item} <hr />
                 </div>
               )
