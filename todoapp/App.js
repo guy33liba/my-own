@@ -1,76 +1,86 @@
-import React, { useState } from "react"
+import { useEffect, useState } from "react"
+import "./App.css"
 import Todo from "./Todo"
-
-const App = () => {
+import axios from "axios"
+import ServerList from "./ServerList"
+function App() {
+  const [array, setarray] = useState([])
   const [input, setinput] = useState("")
-  const [array, setArray] = useState([])
-  const [editinput, setEditinput] = useState("")
+  const [title, setTitle] = useState("")
+  const [task, setTask] = useState("")
 
-  const addtothearray = () => {
-    setArray([...array, { input, edit: false, id: array.length, completed: false }])
+  const url = "http://localhost:4000"
+  const postRequest = () => {
+    axios.post(url, { title, task })
+    setarray([...array, { title: title, task: task }])
+    setTitle("")
+    setTask("")
+  }
+
+  function setit() {
+    setarray((prev) => [...prev, { input, edit: false, complete: false, id: array.length }])
     setinput("")
   }
-  const setEdit = (id) => {
-    setArray(array.map((item) => (item.id === id ? { ...item, edit: !item.edit } : item)))
+  const setcheckBox = (id) => {
+    setarray(array.map((todo) => (todo.id === id ? { ...todo, complete: !todo.complete } : todo)))
   }
-  const filtered = (id) => {
-    const filterdArray = array.filter((todo) => todo.id !== id)
-    setArray(filterdArray)
+  function setedit(id) {
+    setarray(array.map((todo) => (todo.id === id ? { ...todo, edit: !todo.edit } : todo)))
   }
-  const seteditinput = (id) => {
-    setArray(() => {
-      array.map((item) => (item.id === id ? { ...item, input: editinput } : item))
-    })
+  const editTask = (task, id) => {
+    setarray(
+      array.map((item) => (item.id === id ? { ...item, input: task, edit: !item.edit } : item)),
+    )
   }
-  const setCheckbox = (id) => {
-    array.map((todo) => {
-      return todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    })
-  }
+  console.log(array)
   return (
     <div>
+      <div style={{ marginBottom: "20px", marginLeft: "20px" }}>
+        <input
+          type="text"
+          style={{ marginBottom: "20px", marginLeft: "20px" }}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <input
+          type="text"
+          style={{ marginBottom: "20px", marginLeft: "20px" }}
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+        />
+        <button onClick={() => postRequest()}>add todo</button>
+        <div>
+          {array.map((item) => {
+            return <ServerList item={item} />
+          })}
+        </div>
+      </div>
       <input type="text" value={input} onChange={(e) => setinput(e.target.value)} />
-      <button onClick={() => addtothearray()}>add todo</button>
-      <div>
-        {array.map((todo, i) => {
-          return todo.edit ? (
-            <div key={i}>
-              <input type="text" value={editinput} onChange={(e) => setEditinput(e.target.value)} />
-              <button
-                onClick={() => {
-                  seteditinput(todo.id)
-                }}
-              >
-                validate
-              </button>
-            </div>
+      <button onClick={() => setit()}>set</button>
+      <div
+        style={{
+          marginTop: "20px",
+          border: "1px solid gray",
+          height: "400px",
+          display: "flex",
+          flexWrap: "wrap",
+        }}>
+        {array.map((item, index) => {
+          return item.edit ? (
+            <Todo item={item} editTask={editTask} />
           ) : (
-            <div key={i}>
-              {todo.input}
-
-              <button
-                onClick={() => {
-                  filtered(todo.id)
-                  console.log(todo.id)
-                }}
-              >
-                remove{" "}
-              </button>
-              <button
-                onClick={() => {
-                  console.log(todo)
-                  setEdit(todo.id)
-                }}
-              >
-                edit{" "}
-              </button>
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={(e) => {
-                  setCheckbox(todo.id)
-                }}
-              />
+            <div>
+              <div key={index} style={{ marginTop: "10px", display: "flex" }}>
+                <div style={{ marginLeft: "20px" }}>{item.input}</div>
+                <button style={{ marginLeft: "20px" }} onClick={() => setedit(item.id)}>
+                  edit
+                </button>
+                <input
+                  type="checkbox"
+                  checked={item.complete}
+                  onChange={() => setcheckBox(item.id)}
+                />
+              </div>
             </div>
           )
         })}
