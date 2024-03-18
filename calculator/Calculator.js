@@ -3,12 +3,10 @@ import Screen from "./Screen"
 const Calculator = () => {
   const [screen, setScreen] = useState([])
   const [numberValue, setnumberValue] = useState("")
-  const [operatorClass, setOperatorClass] = useState("operator")
-  const addNumberValue = () => {
-    setScreen(() => [...screen, { numberValue: numberValue }])
-  }
-  console.log(numberValue)
 
+  const addNumberValue = () => {
+    setScreen(() => [...screen, { numberValue: numberValue, id: numberValue.toString() }])
+  }
   return (
     <div>
       <div className="container">
@@ -45,7 +43,7 @@ const Calculator = () => {
               setnumberValue("-")
               addNumberValue("-")
             }}
-            className={operatorClass}>
+            className="operator">
             -
           </button>
         </div>
@@ -79,7 +77,7 @@ const Calculator = () => {
               setnumberValue("+")
               addNumberValue("+")
             }}
-            className={operatorClass}>
+            className="operator">
             +
           </button>
         </div>
@@ -113,12 +111,12 @@ const Calculator = () => {
               setnumberValue("*")
               addNumberValue("*")
             }}
-            className={operatorClass}>
+            className="operator">
             *
           </button>
         </div>
         <div className="section">
-          <button className={operatorClass}>=</button>
+          <button className="operator">=</button>
           <button
             onClick={() => {
               setnumberValue("0")
@@ -132,7 +130,7 @@ const Calculator = () => {
               setnumberValue(".")
               addNumberValue(".")
             }}
-            className={operatorClass}>
+            className="operator">
             .
           </button>
           <button
@@ -140,7 +138,7 @@ const Calculator = () => {
               setnumberValue("/")
               addNumberValue("/")
             }}
-            className={operatorClass}>
+            className="operator">
             /
           </button>
         </div>
@@ -149,7 +147,7 @@ const Calculator = () => {
             onClick={() => {
               setScreen([])
             }}
-            className={operatorClass}>
+            className="operator">
             C/A
           </button>
         </div>
