@@ -4,6 +4,7 @@ import Todo from "./Todo"
 import axios from "axios"
 import ServerList from "./ServerList"
 function App() {
+  const [serverList, setServerList] = useState([])
   const [array, setarray] = useState([])
   const [input, setinput] = useState("")
   const [title, setTitle] = useState("")
@@ -16,7 +17,14 @@ function App() {
     setTitle("")
     setTask("")
   }
-
+  const getRequest = () => {
+    axios.get(url).then((response) => {
+      setServerList(response.data)
+    })
+  }
+  useEffect(() => {
+    getRequest()
+  }, [])
   function setit() {
     setarray((prev) => [...prev, { input, edit: false, complete: false, id: array.length }])
     setinput("")
@@ -50,8 +58,8 @@ function App() {
         />
         <button onClick={() => postRequest()}>add todo</button>
         <div>
-          {array.map((item) => {
-            return <ServerList item={item} />
+          {serverList.map((item, index) => {
+            return <ServerList key={index} item={item} />
           })}
         </div>
       </div>
