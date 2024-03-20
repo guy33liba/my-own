@@ -14,8 +14,8 @@ const Calculator = () => {
     if (current != null) {
       setPrevious(() => current)
     }
-    computation(current, previous)
   }
+  computation(current, previous, operation)
 
   const computation = (num1, num2, operator) => {
     let result = ""
@@ -110,7 +110,9 @@ const Calculator = () => {
             <button onClick={() => addDigitToOutput(".")} className="button operation">
               .
             </button>
-            <button className="button equals" onClick={() => computation(current, previous)}>
+            <button
+              className="button equals"
+              onClick={() => computation(current, previous, operation)}>
               =
             </button>
           </div>
