@@ -1,76 +1,64 @@
 body {
-  background: rgb(255, 0, 255);
-}
-.number {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90px;
-  height: 70px;
-  border: 1px solid black;
-  cursor: pointer;
-  transition: 0.5s;
-  font-size: 30px;
-  background: rgb(222, 222, 253);
-}
-
-.operator {
-  background: purple;
-  color: whitesmoke;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90px;
-  height: 70px;
-  border: 1px solid black;
-  font-size: 30px;
-  transition: 0.5s;
-  cursor: pointer;
-}
-.operator:hover {
-  transition: 0.5s;
-  background: rgb(168, 97, 168);
-}
-.number:hover {
-  background: rgb(167, 167, 235);
-  transition: 0.5s;
-}
-body {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
-.container {
-  height: 500px;
-  width: 500px;
-}
-.section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.screen {
-  background: rgb(0, 0, 0);
+.buttons button {
+  font-size: 40px;
+  width: 140px;
   height: 100px;
-  width: 340px;
-  color: rgb(255, 255, 255, 0.8);
+  background-color: rgb(197, 197, 216);
+  transition: 0.5s;
+  color: rgb(0, 0, 0);
+}
+.buttons button:hover {
+  background-color: rgb(197, 197, 216, 0.5);
+  transition: 0.5s;
+}
+.button.equals {
+  background-color: rgb(88, 88, 250);
+
+  width: 280px;
+}
+.button.AC {
+  width: 280px;
+  background-color: rgb(88, 88, 250);
+}
+.button.AC:hover {
+  background-color: rgb(88, 88, 250, 0.5);
+}
+.button.operation {
+  background-color: rgb(88, 88, 250);
+}
+.button.operation:hover {
+  background-color: rgb(88, 88, 250, 0.5);
+}
+button.equals:hover {
+  background-color: rgb(88, 88, 250, 0.5);
+}
+.buttons {
+  width: 600px;
+}
+.container {
+  width: 560px;
+  height: 650px;
+  flex-direction: column;
+}
+.output {
+  border: 1px solid black;
+  background-color: rgb(197, 197, 216, 0.5);
+
   display: flex;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  padding: 10px;
-  align-items: center;
-  margin-left: 70px;
-  font-size: 35px;
-  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  width: 600;
+  height: 100px;
+  text-align: right;
+  justify-content: flex-start;
+  flex-direction: column;
 }
-.clear {
-  width: 500px;
+.current {
+  font-size: 40px;
 }
-.clear button {
-  width: 360px;
-  background: white;
-  color: black;
-  margin-left: 70px;
+.prev {
+  font-size: 30px;
 }
