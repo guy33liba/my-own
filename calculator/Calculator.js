@@ -1,155 +1,119 @@
 import React, { useState } from "react"
-import Screen from "./Screen"
-const Calculator = () => {
-  const [screen, setScreen] = useState([])
-  const [numberValue, setnumberValue] = useState("")
 
-  const addNumberValue = () => {
-    setScreen(() => [...screen, { numberValue: numberValue, id: numberValue.toString() }])
+const Calculator = () => {
+  const [operation, setOperation] = useState("")
+  const [current, setCurrent] = useState("")
+  const [previous, setPrevious] = useState("")
+
+  const addDigitToOutput = (num) => {
+    if (current.includes(".") && num === ".") return current
+    setCurrent((prev) => prev + num)
+  }
+  const addOperationToOutput = (num) => {
+    setOperation(num)
+    if (current != null) {
+      setPrevious(() => current)
+    }
+    computation(current, previous)
+  }
+
+  const computation = (num1, num2, operator) => {
+    let result = ""
+
+    switch (operator) {
+      case "+":
+        return (result = parseInt(num1) + parseInt(num2))
+      case "-":
+        return (result = parseInt(num1) - parseInt(num2))
+      case "*":
+        return (result = parseInt(num1) * parseInt(num2))
+      case "/":
+        return (result = parseInt(num1) / parseInt(num2))
+      default:
+        return num1
+    }
   }
   return (
     <div>
       <div className="container">
-        <div className="screen">
-          <Screen numberValue={numberValue} screen={screen} />
+        <div className="output">
+          <div className="prev">
+            {previous}
+            {operation}
+          </div>
+          <div className="current">{current}</div>
         </div>
-        <div className="section">
-          <button
-            onClick={() => {
-              setnumberValue("7")
-              addNumberValue("7")
-            }}
-            className="number">
-            7
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("8")
-              addNumberValue("8")
-            }}
-            className="number">
-            8
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("9")
-              addNumberValue("9")
-            }}
-            className="number">
-            9
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("-")
-              addNumberValue("-")
-            }}
-            className="operator">
-            -
-          </button>
-        </div>
-        <div className="section">
-          <button
-            onClick={() => {
-              setnumberValue("4")
-              addNumberValue("4")
-            }}
-            className="number">
-            4
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("5")
-              addNumberValue("5")
-            }}
-            className="number">
-            5
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("6")
-              addNumberValue("6")
-            }}
-            className="number">
-            6
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("+")
-              addNumberValue("+")
-            }}
-            className="operator">
-            +
-          </button>
-        </div>
-        <div className="section">
-          <button
-            onClick={() => {
-              setnumberValue("1")
-              addNumberValue("1")
-            }}
-            className="number">
-            1
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("2")
-              addNumberValue("2")
-            }}
-            className="number">
-            2
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("3")
-              addNumberValue("3")
-            }}
-            className="number">
-            3
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("*")
-              addNumberValue("*")
-            }}
-            className="operator">
-            *
-          </button>
-        </div>
-        <div className="section">
-          <button className="operator">=</button>
-          <button
-            onClick={() => {
-              setnumberValue("0")
-              addNumberValue("0")
-            }}
-            className="number">
-            0
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue(".")
-              addNumberValue(".")
-            }}
-            className="operator">
-            .
-          </button>
-          <button
-            onClick={() => {
-              setnumberValue("/")
-              addNumberValue("/")
-            }}
-            className="operator">
-            /
-          </button>
-        </div>
-        <div className="clear">
-          <button
-            onClick={() => {
-              setScreen([])
-            }}
-            className="operator">
-            C/A
-          </button>
+        <div className="buttons">
+          <div className="section">
+            <button
+              onClick={() => {
+                setCurrent("")
+                setPrevious("")
+                setOperation("")
+              }}
+              className="button AC">
+              AC
+            </button>
+            <button onClick={() => setCurrent(current.slice(0, -1))} className="button operation">
+              DEL
+            </button>
+            <button onClick={() => addOperationToOutput("/")} className="button operation">
+              /
+            </button>
+          </div>
+          <div className="section">
+            <button onClick={() => addDigitToOutput("9")} className="button">
+              9
+            </button>
+            <button onClick={() => addDigitToOutput("8")} className="button">
+              8
+            </button>
+            <button onClick={() => addDigitToOutput("7")} className="button">
+              7
+            </button>
+            <button onClick={() => addOperationToOutput("-")} className="button operation">
+              -
+            </button>
+          </div>
+          <div className="section">
+            <button onClick={() => addDigitToOutput("6")} className="button">
+              6
+            </button>
+            <button onClick={() => addDigitToOutput("5")} className="button">
+              5
+            </button>
+            <button onClick={() => addDigitToOutput("4")} className="button">
+              4
+            </button>
+            <button onClick={() => addOperationToOutput("*")} className="button operation">
+              *
+            </button>
+          </div>
+          <div className="section">
+            <button onClick={() => addDigitToOutput("3")} className="button">
+              3
+            </button>
+            <button onClick={() => addDigitToOutput("2")} className="button">
+              2
+            </button>
+            <button onClick={() => addDigitToOutput("1")} className="button">
+              1
+            </button>
+            <button onClick={() => addOperationToOutput("+")} className="button operation">
+              +
+            </button>
+          </div>
+          <div className="section">
+            <button onClick={() => addDigitToOutput("0")} className="button">
+              0
+            </button>
+            <button onClick={() => addDigitToOutput(".")} className="button operation">
+              .
+            </button>
+            <button className="button equals" onClick={() => computation(current, previous)}>
+              =
+            </button>
+          </div>
         </div>
       </div>
     </div>
