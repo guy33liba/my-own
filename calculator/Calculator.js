@@ -13,10 +13,9 @@ const Calculator = () => {
     setOperation(num)
     if (current != null) {
       setPrevious(() => current)
+      setCurrent("")
     }
   }
-  computation(current, previous, operation)
-
   const computation = (num1, num2, operator) => {
     let result = ""
 
@@ -29,10 +28,10 @@ const Calculator = () => {
         return (result = parseInt(num1) * parseInt(num2))
       case "/":
         return (result = parseInt(num1) / parseInt(num2))
-      default:
-        return num1
     }
+    setCurrent(result)
   }
+  console.log(current)
   return (
     <div>
       <div className="container">
