@@ -1,0 +1,55 @@
+import React, { useState } from 'react';
+
+const Elevator = () => {
+    const [currentFloor, setCurrentFloor] = useState(1);
+    const [direction, setDirection] = useState("up");
+    const [destinations, setDestinations] = useState([]);
+
+    const addDestination = (floor) => {
+        setDestinations([...destinations, floor]);
+        if (destinations.length === 0) {
+            setDirection(floor > currentFloor ? "up" : "down");
+        }
+    };
+
+    const findNearestFloor = () => {
+        if (destinations.length === 0) {
+            return null;
+        }
+        const nearestFloor = destinations.reduce((nearest, floor) => {
+            return Math.abs(floor - currentFloor) < Math.abs(nearest - currentFloor) ? floor : nearest;
+        });
+        return nearestFloor;
+    };
+
+    const moveElevator = () => {
+        const nearestFloor = findNearestFloor();
+        if (nearestFloor === null) {
+            return;
+        }
+
+        if (nearestFloor > currentFloor) {
+            setDirection("up");
+            setCurrentFloor(currentFloor + 1);
+        } else if (nearestFloor < currentFloor) {
+            setDirection("down");
+            setCurrentFloor(currentFloor - 1);
+        } else {
+            setDestinations(destinations.filter(floor => floor !== nearestFloor));
+            console.log(`Arrived at floor ${nearestFloor}`);
+        }
+    };
+
+    return (
+        <div>
+            <h2>Elevator</h2>
+            <p>Current Floor: {currentFloor}</p>
+            <p>Direction: {direction}</p>
+            <button onClick={() => addDestination(2)}>Go to Floor 2</button>
+            <button onClick={() => addDestination(5)}>Go to Floor 5</button>
+            <button onClick={() => moveElevator()}>Move Elevator</button>
+        </div>
+    );
+};
+
+export default Elevator;
