@@ -1,0 +1,117 @@
+import React from "react"
+import { useRef, useState } from "react"
+
+export const Edit = ({ handleEditTodo, id }) => {
+  const [edit, setEdit] = useState(false)
+  const [inputChange, setinputChange] = useState("")
+  const [inputHistory, setinputHistory] = useState([])
+  const undoChange = useRef([])
+  const redoChange = useRef([])
+
+  const handleInputChange = () => {
+    handleEditTodo(inputChange, id)
+    setEdit(false)
+    setinputChange("")
+    setinputHistory([...inputHistory, inputChange])
+    undoChange.current.push(inputChange)
+  }
+  const handleUndoChange = (e) => {
+    if (undoChange.current.length > 0) {
+      const previousInputValue = undoChange.current.pop()
+      redoChange.current.push([...inputChange])
+      setinputChange(previousInputValue)
+      console.log(previousInputValue)
+    }
+  }
+  const handleRedoChange = (e) => {
+    if (redoChange.current.length > 0) {
+      const nextInputValue = redoChange.current.pop()
+      undoChange.current.push([...inputHistory])
+      setinputChange(nextInputValue)
+      console.log(undoChange)
+    }
+  }
+  return (
+    <div>
+      {!edit ? (
+        <div>
+          <button onClick={() => setEdit(!edit)}>Edit</button>
+        </div>
+      ) : (
+        <div>
+          <input type="text" value={inputChange} onChange={(e) => setinputChange(e.target.value)} />
+          <button style={{ marginLeft: "20px" }} onClick={() => handleInputChange()}>
+            SET Edit
+          </button>
+          <button onClick={() => handleUndoChange()}>Undo Edit</button>
+          <button onClick={() => handleRedoChange()}>Redo Edit</button>
+        </div>
+      )}
+    </div>
+  )
+}
+const App = () => {
+  const [todos, setTodos] = useState([])
+  const [input, setinput] = useState("")
+  const redo = useRef([])
+  const undo = useRef([])
+
+  const handleAddTodo = () => {
+    setTodos([...todos, { input: input, id: todos.length }])
+    undo.current.push([...todos])
+    setinput("")
+  }
+  const handleDeleteTodo = (id) => {
+    const filtered = todos.filter((todo) => todo.id !== id)
+    setTodos(filtered)
+  }
+  const handleUndo = () => {
+    if (undo.current.length > 0) {
+      const previousState = undo.current.pop()
+      redo.current.push([...todos])
+      setTodos(previousState)
+      console.log(previousState)
+      console.log(undo)
+    }
+  }
+  const handleRedo = () => {
+    if (redo.current.length > 0) {
+      const nextState = redo.current.pop()
+      undo.current.push([...todos])
+      setTodos(nextState)
+      console.log(nextState)
+    }
+  }
+  const handleEditTodo = (newInput, id) => {
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, input: newInput } : todo)), // corrected updating todo item
+    )
+  }
+
+  return (
+    <div>
+      <input type="text" value={input} onChange={(e) => setinput(e.target.value)} />
+      <button onClick={() => handleAddTodo()}>add</button>
+      <button onClick={() => handleUndo()}>undo</button>
+      <button onClick={() => handleRedo()}>redo</button>
+
+      <div>
+        {todos.map((todo, i) => {
+          return (
+            <div key={i}>
+              <div style={{ display: "flex", width: "100%" }}>
+                {todo.input}
+                <button style={{ marginLeft: "20px" }} onClick={() => handleDeleteTodo(todo.id)}>
+                  delete
+                </button>
+                <Edit handleEditTodo={handleEditTodo} id={todo.id} />
+              </div>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+export default App
